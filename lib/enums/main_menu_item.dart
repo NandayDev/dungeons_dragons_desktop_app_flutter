@@ -1,0 +1,4 @@
+enum MainMenuItem {
+  PLAYERS,
+  COMBAT
+}
