@@ -1,5 +1,6 @@
 import 'package:dungeonsanddragons_helper/models/character.dart';
 import 'package:dungeonsanddragons_helper/services/database.dart';
+import 'package:reflectable/reflectable.dart';
 
 ///
 /// Repository for all characters persistent operations
@@ -26,7 +27,9 @@ class CharacterRepositoryImpl implements CharacterRepository {
         "SELECT * FROM ${DungeonsDatabase.CHARACTERS_TABLE} WHERE ${DungeonsDatabase.CHARACTER_TYPE} = ${DungeonsDatabase.CHARACTER_TYPE_PC}");
     List<PlayerCharacter> playerCharacters = [];
     queryResult.forEach((row) {
-      playerCharacters.add(PlayerCharacter(
+      playerCharacters.add(PlayerCharacter.fromExisting(
+          row[DungeonsDatabase.BASE_MODEL_ID] as int,
+          DungeonsDatabase.getUtcDateTimeFromMillisecondsSinceEpoch(row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int),
           row[DungeonsDatabase.CHARACTER_PLAYER_NAME] as String,
           row[DungeonsDatabase.CHARACTER_STRENGTH] as int,
           row[DungeonsDatabase.CHARACTER_DEXTERITY] as int,
@@ -56,6 +59,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
 extension CharacterToMap on Character {
   Map<String, dynamic> _toMap() {
+
     return {
       DungeonsDatabase.CHARACTER_STRENGTH: strength,
       DungeonsDatabase.CHARACTER_DEXTERITY: dexterity,
