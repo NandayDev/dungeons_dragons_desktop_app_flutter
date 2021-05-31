@@ -1,4 +1,5 @@
 import 'package:dungeonsanddragons_helper/enums/main_menu_item.dart';
+import 'package:dungeonsanddragons_helper/ui/characters/player_characters_list_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -62,7 +63,7 @@ class _HomePageState extends State<HomePage> {
     switch(_currentItem) {
 
       case MainMenuItem.PLAYERS:
-        return Center(child: Text("Players"));
+        return PlayerCharacterListWidget();
 
       case MainMenuItem.COMBAT:
         // TODO: Handle this case.

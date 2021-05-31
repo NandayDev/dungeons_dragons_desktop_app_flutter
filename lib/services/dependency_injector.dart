@@ -1,4 +1,5 @@
 import 'package:dungeonsanddragons_helper/services/character_repository.dart';
+import 'package:dungeonsanddragons_helper/ui/characters/player_characters_list_viewmodel.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 
 import 'character_notes_repository.dart';
@@ -19,7 +20,7 @@ class DependencyInjector {
     _injector.map<CharacterNotesRepository>((i) => CharacterNotesRepositoryImpl(), isSingleton: true);
 
     // View models //
-    //_injector.map<HomeViewModel>((i) => HomeViewModel(resolve()));
+    _injector.map<PlayerCharactersListViewModel>((i) => PlayerCharactersListViewModel(resolve()));
   }
 
   ///
