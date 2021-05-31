@@ -1,5 +1,6 @@
 import 'package:dungeonsanddragons_helper/models/character.dart';
 import 'package:dungeonsanddragons_helper/services/database.dart';
+import 'package:flutter/foundation.dart';
 
 ///
 /// Repository for all characters persistent operations
@@ -22,6 +23,14 @@ class CharacterRepositoryImpl implements CharacterRepository {
     var database = await DungeonsDatabase.getDatabaseInstance();
     var queryResult = await database.rawQuery(
         "SELECT * FROM ${DungeonsDatabase.CHARACTERS_TABLE} WHERE ${DungeonsDatabase.CHARACTER_TYPE} = ${DungeonsDatabase.CHARACTER_TYPE_PC}");
+
+    if (!kReleaseMode) {
+      var pc1 = PlayerCharacter.createNew("Guido", "Sir Arthur Swampwalker", 18, 12, 11, 19, 8, 14, "Paladin", 10, 4, 19, 4, 2, 5);
+      var pc2 = PlayerCharacter.createNew("Andrea", "Darnas Oml", 15, 7, 12, 18, 8, 14, "Rogue", 6, 10, 3, 5, 8, 2);
+      await savePlayerCharacter(pc1);
+      await savePlayerCharacter(pc2);
+    }
+
     List<PlayerCharacter> playerCharacters = [];
     queryResult.forEach((row) {
       playerCharacters.add(PlayerCharacter.fromExisting(
@@ -29,6 +38,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
           DungeonsDatabase.getUtcDateTimeFromMillisecondsSinceEpoch(
               row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int),
           row[DungeonsDatabase.CHARACTER_PLAYER_NAME] as String,
+          row[DungeonsDatabase.CHARACTER_NAME] as String,
           row[DungeonsDatabase.CHARACTER_STRENGTH] as int,
           row[DungeonsDatabase.CHARACTER_DEXTERITY] as int,
           row[DungeonsDatabase.CHARACTER_CONSTITUTION] as int,
@@ -56,12 +66,15 @@ class CharacterRepositoryImpl implements CharacterRepository {
 }
 
 extension CharacterToMap on Character {
+
   ///
-  /// Converts any character into a map for each property
+  /// Converts any character into a map with each property
   /// Useful for database operations
   ///
   Map<String, dynamic> _toMap() {
     return {
+      DungeonsDatabase.BASE_MODEL_CREATION_DATE: DungeonsDatabase.getMillisecondsSinceEpochFromDateTime(creationDate),
+      DungeonsDatabase.CHARACTER_NAME: name,
       DungeonsDatabase.CHARACTER_STRENGTH: strength,
       DungeonsDatabase.CHARACTER_DEXTERITY: dexterity,
       DungeonsDatabase.CHARACTER_CONSTITUTION: constitution,

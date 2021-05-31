@@ -22,6 +22,7 @@ class DungeonsDatabase {
         "$BASE_MODEL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
         "$BASE_MODEL_CREATION_DATE INTEGER NOT NULL," +
         "$CHARACTER_TYPE INTEGER NOT NULL," +
+        "$CHARACTER_NAME TEXT NOT NULL," +
         "$CHARACTER_PLAYER_NAME TEXT NULL," +
         "$CHARACTER_STRENGTH INTEGER NOT NULL," +
         "$CHARACTER_DEXTERITY INTEGER NOT NULL," +
@@ -42,7 +43,7 @@ class DungeonsDatabase {
         "CREATE TABLE $CHARACTER_NOTES_TABLE (" +
         "$BASE_MODEL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
         "$BASE_MODEL_CREATION_DATE INTEGER NOT NULL," +
-        "$CHARACTER_NOTES_CHARACTER_ID INTEGER NOT NULL" +
+        "$CHARACTER_NOTES_CHARACTER_ID INTEGER NOT NULL," +
         "$CHARACTER_NOTES_CONTENT TEXT NOT NULL," +
         "$CHARACTER_NOTES_PRIORITY INTEGER NOT NULL);");
   }
@@ -54,6 +55,7 @@ class DungeonsDatabase {
 
   static const String CHARACTERS_TABLE = "players";
   static const String CHARACTER_TYPE = "type";
+  static const String CHARACTER_NAME = "name";
   static const String CHARACTER_PLAYER_NAME = "player_name";
   static const String CHARACTER_STRENGTH = "strength";
   static const String CHARACTER_DEXTERITY = "dexterity";
