@@ -1,14 +1,17 @@
 import 'dart:core';
 
-import 'package:sqflite_sqlcipher/sqflite.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DungeonsDatabase {
 
   static Future<Database> getDatabaseInstance() {
-    return openDatabase(
+    sqfliteFfiInit();
+    var databaseFactory = databaseFactoryFfi;
+    var openDatabaseOptions = OpenDatabaseOptions(version: 1, onCreate: _createDatabase);
+    return databaseFactory.openDatabase(
         _DB_PATH,
-        password: "dmsarethebest",
-        onCreate: _createDatabase);
+        options: openDatabaseOptions);
   }
 
   static Future _createDatabase(Database db, int version) async {

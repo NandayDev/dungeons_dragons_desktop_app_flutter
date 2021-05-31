@@ -12,8 +12,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # SQLite + SQLCipher #
-  sqflite_sqlcipher: ^2.0.0
+  # SQLite #
+  sqflite: ^2.0.0+3
+  sqflite_common_ffi: ^2.0.0
 
   # Dependency injection #
   flutter_simple_dependency_injection: ^2.0.0
