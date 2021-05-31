@@ -25,10 +25,44 @@ class CharacterRepositoryImpl implements CharacterRepository {
         "SELECT * FROM ${DungeonsDatabase.CHARACTERS_TABLE} WHERE ${DungeonsDatabase.CHARACTER_TYPE} = ${DungeonsDatabase.CHARACTER_TYPE_PC}");
 
     if (!kReleaseMode) {
-      var pc1 = PlayerCharacter.createNew("Guido", "Sir Arthur Swampwalker", 18, 12, 11, 19, 8, 14, "Paladin", 10, 4, 19, 4, 2, 5);
-      var pc2 = PlayerCharacter.createNew("Andrea", "Darnas Oml", 15, 7, 12, 18, 8, 14, "Rogue", 6, 10, 3, 5, 8, 2);
-      await savePlayerCharacter(pc1);
-      await savePlayerCharacter(pc2);
+      var countQueryResult = await database.rawQuery("SELECT COUNT(*) FROM ${DungeonsDatabase.CHARACTERS_TABLE}");
+      var count = countQueryResult[0].values.first as int;
+      if (count == 0) {
+        var pc1 = PlayerCharacter.createNew(
+            "Guido",
+            "Sir Arthur Swampwalker",
+            18,
+            12,
+            11,
+            19,
+            8,
+            14,
+            "Paladin",
+            10,
+            4,
+            19,
+            4,
+            2,
+            5);
+        var pc2 = PlayerCharacter.createNew(
+            "Andrea",
+            "Darnas Oml",
+            15,
+            7,
+            12,
+            18,
+            8,
+            14,
+            "Rogue",
+            6,
+            10,
+            3,
+            5,
+            8,
+            2);
+        await savePlayerCharacter(pc1);
+        await savePlayerCharacter(pc2);
+      }
     }
 
     List<PlayerCharacter> playerCharacters = [];

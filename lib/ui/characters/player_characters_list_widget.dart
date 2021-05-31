@@ -23,6 +23,7 @@ class PlayerCharacterListWidget extends ConsumerWidget {
                 alignment: Alignment.center,
                 child: ListView.builder(
                     padding: EdgeInsets.all(16.0),
+                    itemCount: state.playerCharacters.length * 2,
                     itemBuilder: (context, i) {
                       if (i.isOdd) return Divider();
 
@@ -31,7 +32,8 @@ class PlayerCharacterListWidget extends ConsumerWidget {
                       if (index >= state.playerCharacters.length) {
                         return Container();
                       }
-                      return CharacterListElement(state.playerCharacters[i]);
+
+                      return CharacterListElement(state.playerCharacters[index]);
                     })
             )
         )

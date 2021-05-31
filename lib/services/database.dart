@@ -48,7 +48,7 @@ class DungeonsDatabase {
         "$CHARACTER_NOTES_PRIORITY INTEGER NOT NULL);");
   }
 
-  static const String _DB_PATH = "db.db";
+  static const String _DB_PATH = "db.dungeonsdragonsdb";
 
   static const String BASE_MODEL_ID = "id";
   static const String BASE_MODEL_CREATION_DATE = "creation_date";
