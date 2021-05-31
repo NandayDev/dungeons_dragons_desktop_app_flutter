@@ -15,7 +15,7 @@ class CharacterNote extends BaseModel {
   String content;
 
   /// Which priority this note has
-  NotePriority notePriority = NotePriority.DEFAULT;
+  NotePriority notePriority;
 }
 
 enum NotePriority {
