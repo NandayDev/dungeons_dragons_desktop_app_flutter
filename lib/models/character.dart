@@ -9,6 +9,7 @@ abstract class Character extends BaseModel {
   Character.fromExisting(
       int id,
       DateTime creationDate,
+      this.name,
       this.strength,
       this.dexterity,
       this.constitution,
@@ -25,6 +26,7 @@ abstract class Character extends BaseModel {
 
   /// Creates a brand new character
   Character.createNew(
+      this.name,
       this.strength,
       this.dexterity,
       this.constitution,
@@ -38,6 +40,9 @@ abstract class Character extends BaseModel {
       this.passiveWisdom,
       this.stealth,
       this.insight) : super.createNew();
+
+  /// Character name
+  String name;
 
   /// Strength ability score
   int strength;
@@ -83,6 +88,7 @@ class PlayerCharacter extends Character {
 
   PlayerCharacter.createNew(
       this.playerName,
+      String name,
       int strength,
       int dexterity,
       int constitution,
@@ -97,6 +103,7 @@ class PlayerCharacter extends Character {
       int stealth,
       int insight)
       : super.createNew(
+      name,
       strength,
       dexterity,
       constitution,
@@ -115,6 +122,7 @@ class PlayerCharacter extends Character {
       int id,
       DateTime creationDate,
       this.playerName,
+      String name,
       int strength,
       int dexterity,
       int constitution,
@@ -131,6 +139,7 @@ class PlayerCharacter extends Character {
       : super.fromExisting(
       id,
       creationDate,
+      name,
       strength,
       dexterity,
       constitution,
@@ -156,6 +165,7 @@ class PlayerCharacter extends Character {
 class NonPlayingCharacter extends Character {
 
   NonPlayingCharacter.createNew(
+      String name,
       int strength,
       int dexterity,
       int constitution,
@@ -170,6 +180,7 @@ class NonPlayingCharacter extends Character {
       int stealth,
       int insight)
       : super.createNew(
+      name,
       strength,
       dexterity,
       constitution,
