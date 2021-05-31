@@ -50,12 +50,16 @@ class CharacterRepositoryImpl implements CharacterRepository {
   Future<bool> savePlayerCharacter(PlayerCharacter character) async {
     var database = await DungeonsDatabase.getDatabaseInstance();
     int result = await database.insert(
-        DungeonsDatabase.CHARACTERS_TABLE, character._toMap());
+        DungeonsDatabase.CHARACTERS_TABLE, character._toPlayerCharacterMap());
     return result > 0;
   }
 }
 
 extension CharacterToMap on Character {
+  ///
+  /// Converts any character into a map for each property
+  /// Useful for database operations
+  ///
   Map<String, dynamic> _toMap() {
     return {
       DungeonsDatabase.CHARACTER_STRENGTH: strength,
@@ -76,8 +80,12 @@ extension CharacterToMap on Character {
 }
 
 extension PlayerCharacterToMap on PlayerCharacter {
-  Map<String, dynamic> _toMap() {
-    var map = (this as Character)._toMap();
+
+  ///
+  /// Converts a player character into a map
+  ///
+  Map<String, dynamic> _toPlayerCharacterMap() {
+    var map = _toMap();
     map[DungeonsDatabase.CHARACTER_TYPE] = DungeonsDatabase.CHARACTER_TYPE_PC;
     map[DungeonsDatabase.CHARACTER_PLAYER_NAME] = playerName;
     return map;

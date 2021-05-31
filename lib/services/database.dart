@@ -93,11 +93,3 @@ class DungeonsDatabase {
     return dateTime.millisecondsSinceEpoch;
   }
 }
-
-class DatabaseColumn {
-
-  const DatabaseColumn(this.columnName);
-
-  final String columnName;
-
-}
