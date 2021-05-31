@@ -12,9 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  dungeonsanddragons_core:
-    path: ../dungeonsanddragons_core
-
   # SQLite + SQLCipher #
   sqflite_sqlcipher: ^2.0.0
 
