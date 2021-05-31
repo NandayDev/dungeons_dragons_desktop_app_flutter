@@ -5,7 +5,7 @@ class CharacterNote extends BaseModel {
   CharacterNote.createNew(this.characterId, this.content, { this.notePriority = NotePriority.DEFAULT })
       : super.createNew();
 
-  CharacterNote.fromExisting(int id, DateTime creationDate, this.characterId, this.content, { this.notePriority = NotePriority.DEFAULT })
+  CharacterNote.fromExisting(int id, DateTime creationDate, this.characterId, this.content, this.notePriority)
       : super.fromExisting(id, creationDate);
 
   /// Id of the character to which this note is linked to

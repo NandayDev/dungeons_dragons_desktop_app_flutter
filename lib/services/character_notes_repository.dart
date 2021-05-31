@@ -24,15 +24,16 @@ class CharacterNotesRepositoryImpl implements CharacterNotesRepository {
         "SELECT * FROM ${DungeonsDatabase.CHARACTER_NOTES_TABLE} WHERE ${DungeonsDatabase.CHARACTER_NOTES_CHARACTER_ID} = ${character.id}");
     List<CharacterNote> notes = [];
     queryResult.forEach((row) {
+      DateTime creationDate = DungeonsDatabase.getUtcDateTimeFromMillisecondsSinceEpoch(row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int);
+      NotePriority notePriority = EnumUtility.parseFromInt(
+          NotePriority.values,
+          row[DungeonsDatabase.CHARACTER_NOTES_PRIORITY] as int)!;
       notes.add(CharacterNote.fromExisting(
           row[DungeonsDatabase.BASE_MODEL_ID] as int,
-          DungeonsDatabase.getUtcDateTimeFromMillisecondsSinceEpoch(
-              row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int),
+          creationDate,
           character.id,
           row[DungeonsDatabase.CHARACTER_NOTES_CONTENT] as String,
-          notePriority: EnumUtility.parseFromInt(
-              NotePriority.values,
-              row[DungeonsDatabase.CHARACTER_NOTES_PRIORITY] as int)!));
+          notePriority));
     });
     return notes;
   }
