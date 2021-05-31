@@ -1,5 +1,3 @@
-import 'package:reflectable/reflectable.dart';
-
 ///
 /// Base class for all database models of the application
 ///
