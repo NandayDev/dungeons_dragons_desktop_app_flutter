@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test("Test proficiency bonus", () {
-    var character = PlayerCharacter("", 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0, 0);
+    var character = PlayerCharacter.createNew("", 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0, 0);
     for (int i = 1; i < 21; i++) {
       character.level = i;
       switch (character.level) {
