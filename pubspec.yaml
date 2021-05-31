@@ -16,7 +16,7 @@ dependencies:
   sqflite_sqlcipher: ^2.0.0
 
   # Dependency injection #
-  flutter_simple_dependency_injection: any
+  flutter_simple_dependency_injection: ^2.0.0
 
   # Reactive features #
   flutter_riverpod: ^0.14.0+3
