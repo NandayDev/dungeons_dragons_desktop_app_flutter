@@ -1,11 +1,12 @@
 import 'package:dungeonsanddragons_helper/services/character_repository.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 
+import 'character_notes_repository.dart';
+
 ///
 /// Simple implementation of a dependency injector
 ///
 class DependencyInjector {
-
   bool _initialized = false;
   Injector _injector = Injector();
 
@@ -15,10 +16,10 @@ class DependencyInjector {
   void initialize() {
     // Services //
     _injector.map<CharacterRepository>((i) => CharacterRepositoryImpl(), isSingleton: true);
+    _injector.map<CharacterNotesRepository>((i) => CharacterNotesRepositoryImpl(), isSingleton: true);
 
     // View models //
     //_injector.map<HomeViewModel>((i) => HomeViewModel(resolve()));
-
   }
 
   ///
@@ -43,5 +44,4 @@ class DependencyInjector {
     }
     return _instance;
   }
-
 }

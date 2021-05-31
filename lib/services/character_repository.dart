@@ -5,7 +5,6 @@ import 'package:dungeonsanddragons_helper/services/database.dart';
 /// Repository for all characters persistent operations
 ///
 abstract class CharacterRepository {
-
   ///
   /// Returns all player characters from the storage
   ///
@@ -18,7 +17,6 @@ abstract class CharacterRepository {
 }
 
 class CharacterRepositoryImpl implements CharacterRepository {
-
   @override
   Future<List<PlayerCharacter>> getAllPlayerCharacters() async {
     var database = await DungeonsDatabase.getDatabaseInstance();
@@ -28,7 +26,8 @@ class CharacterRepositoryImpl implements CharacterRepository {
     queryResult.forEach((row) {
       playerCharacters.add(PlayerCharacter.fromExisting(
           row[DungeonsDatabase.BASE_MODEL_ID] as int,
-          DungeonsDatabase.getUtcDateTimeFromMillisecondsSinceEpoch(row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int),
+          DungeonsDatabase.getUtcDateTimeFromMillisecondsSinceEpoch(
+              row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int),
           row[DungeonsDatabase.CHARACTER_PLAYER_NAME] as String,
           row[DungeonsDatabase.CHARACTER_STRENGTH] as int,
           row[DungeonsDatabase.CHARACTER_DEXTERITY] as int,
@@ -58,7 +57,6 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
 extension CharacterToMap on Character {
   Map<String, dynamic> _toMap() {
-
     return {
       DungeonsDatabase.CHARACTER_STRENGTH: strength,
       DungeonsDatabase.CHARACTER_DEXTERITY: dexterity,
