@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PlayerCharacterListWidget extends ConsumerWidget {
-
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final PlayerCharactersListState state = watch(PlayerCharactersListViewModel.provider);
-    var viewModel = context.read(PlayerCharactersListViewModel.provider.notifier);
+    final PlayerCharactersListState state =
+        watch(PlayerCharactersListViewModel.provider);
+    var viewModel =
+        context.read(PlayerCharactersListViewModel.provider.notifier);
 
     if (state.arePlayersToBeLoaded) {
       // Loads the player characters //
@@ -20,43 +21,32 @@ class PlayerCharacterListWidget extends ConsumerWidget {
             child: state.arePlayersToBeLoaded
                 ? CircularProgressIndicator()
                 : Container(
-                alignment: Alignment.center,
-                child: ListView.builder(
-                    padding: EdgeInsets.all(16.0),
-                    itemCount: state.playerCharacters.length * 2,
-                    itemBuilder: (context, i) {
-                      if (i.isOdd) return Divider();
-
-                      final index = i ~/ 2;
-
-                      if (index >= state.playerCharacters.length) {
-                        return Container();
-                      }
-
-                      return CharacterListElement(state.playerCharacters[index]);
-                    })
-            )
-        )
-    );
-  }
-}
-
-class CharacterListElement extends StatelessWidget {
-
-  CharacterListElement(this._playerCharacter);
-
-  final PlayerCharacter _playerCharacter;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          Text(_playerCharacter.playerName),
-          Text(_playerCharacter.name)
-        ],
-      )
-    );
+                    alignment: Alignment.center,
+                    child: Table(
+                        border: TableBorder.all(),
+                        columnWidths: const <int, TableColumnWidth>{
+                          0: FlexColumnWidth(),
+                          1: FlexColumnWidth()
+                        },
+                        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                        children: _getTableRows(state.playerCharacters).toList()
+                        ),
+                  )));
   }
 
+  Iterable<TableRow> _getTableRows(List<PlayerCharacter> characters) sync* {
+    // Table header //
+    yield TableRow(children: [
+      TableCell(child: Text("Player name")),
+      TableCell(child: Text("Character name"))
+    ]);
+
+    // Table rows //
+    for (final character in characters) {
+      yield TableRow(children: [
+        TableCell(child: Text(character.playerName)),
+        TableCell(child: Text(character.name)),
+      ]);
+    }
+  }
 }
