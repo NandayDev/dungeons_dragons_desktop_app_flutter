@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PlayerCharacterListWidget extends ConsumerWidget {
+
+  late final PlayerCharactersListViewModel _viewModel;
+
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final PlayerCharactersListState state =
-        watch(PlayerCharactersListViewModel.provider);
-    var viewModel =
-        context.read(PlayerCharactersListViewModel.provider.notifier);
+    final PlayerCharactersListState state = watch(PlayerCharactersListViewModel.provider);
+    _viewModel = context.read(PlayerCharactersListViewModel.provider.notifier);
 
     if (state.arePlayersToBeLoaded) {
       // Loads the player characters //
-      viewModel.loadPlayerCharacters();
+      _viewModel.loadPlayerCharacters();
     }
 
     return Scaffold(
@@ -25,7 +26,14 @@ class PlayerCharacterListWidget extends ConsumerWidget {
                     child: DataTable(
                         columns: [
                           DataColumn(label: Text("Player name")),
-                          DataColumn(label: Text("Character name"))
+                          DataColumn(label: Text("Character name")),
+                          DataColumn(label: Text("Class")),
+                          DataColumn(label: Text("Level")),
+                          DataColumn(label: Text("Initiative")),
+                          DataColumn(label: Text("Armor class")),
+                          DataColumn(label: Text("Passive wisdom")),
+                          DataColumn(label: Text("Stealth")),
+                          DataColumn(label: Text("Insight")),
                         ],
                         rows: _getTableRows(state.playerCharacters, context)
                             .toList()
@@ -43,9 +51,24 @@ class PlayerCharacterListWidget extends ConsumerWidget {
     // Table rows //
     for (final character in characters) {
       yield DataRow(cells: [
-        DataCell(Text(character.playerName,)),
+        DataCell(Text(character.playerName), onTap: () {
+
+        }),
         DataCell(Text(character.name)),
+        DataCell(Text(character.primaryClass)),
+        DataCell(Text(character.level.toString())),
+        DataCell(Text(_bonusToString(character.initiativeBonus))),
+        DataCell(Text(character.armorClass.toString())),
+        DataCell(Text(_bonusToString(character.passiveWisdom))),
+        DataCell(Text(_bonusToString(character.stealth))),
+        DataCell(Text(_bonusToString(character.insight))),
+
       ]);
     }
   }
+
+  ///
+  /// Converts a bonus into a readable string
+  ///
+  String _bonusToString(int bonus) => bonus >= 0 ? "+" + bonus.toString() : "-" + bonus.toString();
 }
