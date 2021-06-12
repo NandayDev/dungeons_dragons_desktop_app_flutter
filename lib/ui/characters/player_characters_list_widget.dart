@@ -22,30 +22,29 @@ class PlayerCharacterListWidget extends ConsumerWidget {
                 ? CircularProgressIndicator()
                 : Container(
                     alignment: Alignment.center,
-                    child: Table(
-                        border: TableBorder.all(),
-                        columnWidths: const <int, TableColumnWidth>{
-                          0: FlexColumnWidth(),
-                          1: FlexColumnWidth()
-                        },
-                        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                        children: _getTableRows(state.playerCharacters).toList()
-                        ),
-                  )));
+                    child: DataTable(
+                        columns: [
+                          DataColumn(label: Text("Player name")),
+                          DataColumn(label: Text("Character name"))
+                        ],
+                        rows: _getTableRows(state.playerCharacters, context)
+                            .toList()
+                    )
+            )
+        )
+    );
   }
 
-  Iterable<TableRow> _getTableRows(List<PlayerCharacter> characters) sync* {
-    // Table header //
-    yield TableRow(children: [
-      TableCell(child: Text("Player name")),
-      TableCell(child: Text("Character name"))
-    ]);
-
+  ///
+  /// Returns the list of rows for the datatable, with the characters info
+  ///
+  Iterable<DataRow> _getTableRows(
+      List<PlayerCharacter> characters, BuildContext context) sync* {
     // Table rows //
     for (final character in characters) {
-      yield TableRow(children: [
-        TableCell(child: Text(character.playerName)),
-        TableCell(child: Text(character.name)),
+      yield DataRow(cells: [
+        DataCell(Text(character.playerName,)),
+        DataCell(Text(character.name)),
       ]);
     }
   }
