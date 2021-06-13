@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:dungeonsanddragons_helper/models/character.dart';
 import 'package:dungeonsanddragons_helper/ui/characters/player_characters_list_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PlayerCharacterListWidget extends ConsumerWidget {
 
-  late final PlayerCharactersListViewModel _viewModel;
+  late PlayerCharactersListViewModel _viewModel;
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
@@ -34,9 +36,11 @@ class PlayerCharacterListWidget extends ConsumerWidget {
                           DataColumn(label: Text("Passive wisdom")),
                           DataColumn(label: Text("Stealth")),
                           DataColumn(label: Text("Insight")),
+                          DataColumn(label: Text("Edit")),
                         ],
                         rows: _getTableRows(state.playerCharacters, context)
-                            .toList()
+                            .toList(),
+                      showCheckboxColumn: false,
                     )
             )
         )
@@ -51,9 +55,7 @@ class PlayerCharacterListWidget extends ConsumerWidget {
     // Table rows //
     for (final character in characters) {
       yield DataRow(cells: [
-        DataCell(Text(character.playerName), onTap: () {
-
-        }),
+        DataCell(Text(character.playerName)),
         DataCell(Text(character.name)),
         DataCell(Text(character.primaryClass)),
         DataCell(Text(character.level.toString())),
@@ -62,7 +64,12 @@ class PlayerCharacterListWidget extends ConsumerWidget {
         DataCell(Text(_bonusToString(character.passiveWisdom))),
         DataCell(Text(_bonusToString(character.stealth))),
         DataCell(Text(_bonusToString(character.insight))),
+        DataCell(IconButton (
+          icon: Icon(Icons.edit),
+          hoverColor: Colors.primaries[0].shade100,
+          onPressed: () {
 
+          },))
       ]);
     }
   }
