@@ -65,9 +65,17 @@ class _HomePageState extends State<HomePage> {
       case MainMenuItem.PLAYERS:
         return PlayerCharacterListWidget();
 
+      case MainMenuItem.NPC:
+        // TODO: Handle this case.
+        return Center(child: Text("NPC"));
+
+      case MainMenuItem.MONSTERS:
+        // TODO: Handle this case.
+        return Center(child: Text("MONSTERS"));
+
       case MainMenuItem.COMBAT:
         // TODO: Handle this case.
-        return Center(child: Text("Combat"));
+        return Center(child: Text("COMBAT"));
 
       case null:
         return Center(child: Text("Welcome!"),);
