@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PlayerCharacterListWidget extends ConsumerWidget {
 
-  late PlayerCharactersListViewModel _viewModel;
+  late final PlayerCharactersListViewModel _viewModel;
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
@@ -68,7 +68,7 @@ class PlayerCharacterListWidget extends ConsumerWidget {
           icon: Icon(Icons.edit),
           hoverColor: Colors.primaries[0].shade100,
           onPressed: () {
-
+            // TODO
           },))
       ]);
     }

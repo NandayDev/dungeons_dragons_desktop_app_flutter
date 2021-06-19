@@ -1,25 +1,30 @@
 class CombatEventListElementViewModel {
 
   CombatEventListElementViewModel(
-      this.id,
-      this.name,
-      this.creationDate,
-      this.numberOfCharacters,
-      this.currentRound
+      this._id,
+      this._name,
+      this._creationDate,
+      this._numberOfCharacters,
+      this._currentRound
       );
 
+  int _id;
   /// Database ID
-  int id;
+  int get id => _id;
 
+  String _name;
   /// User-inserted name for this battle
-  String name;
+  String get name => _name;
 
+  DateTime _creationDate;
   /// Date of creation for the combat event
-  DateTime creationDate;
+  DateTime get creationDate => _creationDate;
 
+  int _numberOfCharacters;
   /// Count of PCs + NPCs + monsters
-  int numberOfCharacters;
+  int get numberOfCharacters => _numberOfCharacters;
 
-  /// Number of current round
-  int currentRound;
+  int _currentRound;
+  /// Number of current round (0-indexed)
+  int get currentRound => _currentRound;
 }
