@@ -8,6 +8,7 @@ import 'character.dart';
 class CombatEvent extends BaseModel {
   /// Creates a new combat event
   CombatEvent.createNew(
+      this.name,
       this.characters,
       this.currentHps,
       this.initiativesRolled,
@@ -19,12 +20,16 @@ class CombatEvent extends BaseModel {
   CombatEvent.fromExisting(
       int id,
       DateTime creationDate,
+      this.name,
       this.characters,
       this.currentHps,
       this.initiativesRolled,
       this.isRoundOver,
       this.currentRound)
       : super.fromExisting(id, creationDate);
+
+  /// User-inserted name for this battle
+  String name;
 
   /// List of IDs for the combatants of the fight
   List<Character> characters;

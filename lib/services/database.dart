@@ -79,6 +79,14 @@ class DungeonsDatabase {
   static const String CHARACTER_NOTES_CONTENT = "content";
   static const String CHARACTER_NOTES_PRIORITY = "priority";
 
+  static const String COMBAT_EVENTS_TABLE = "combat_events";
+  static const String COMBAT_EVENT_NAME = "name";
+  static const String COMBAT_EVENT_CHARACTERS = "characters";
+  static const String COMBAT_EVENT_CURRENT_HPS = "current_hps";
+  static const String COMBAT_EVENT_INITIATIVES_ROLLED = "initiatives_rolled";
+  static const String COMBAT_EVENT_IS_ROUND_OVER = "is_round_over";
+  static const String COMBAT_EVENT_CURRENT_ROUND = "current_round";
+
   // Utility methods //
 
   ///
