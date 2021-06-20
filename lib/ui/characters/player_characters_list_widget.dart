@@ -7,16 +7,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PlayerCharacterListWidget extends ConsumerWidget {
 
-  late final PlayerCharactersListViewModel _viewModel;
+  PlayerCharactersListViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final PlayerCharactersListState state = watch(PlayerCharactersListViewModel.provider);
-    _viewModel = context.read(PlayerCharactersListViewModel.provider.notifier);
+    if (_viewModel == null)
+      _viewModel = context.read(PlayerCharactersListViewModel.provider.notifier);
 
     if (state.arePlayersToBeLoaded) {
       // Loads the player characters //
-      _viewModel.loadPlayerCharacters();
+      _viewModel!.loadPlayerCharacters();
     }
 
     return Scaffold(

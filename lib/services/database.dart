@@ -46,6 +46,18 @@ class DungeonsDatabase {
         "$CHARACTER_NOTES_CHARACTER_ID INTEGER NOT NULL," +
         "$CHARACTER_NOTES_CONTENT TEXT NOT NULL," +
         "$CHARACTER_NOTES_PRIORITY INTEGER NOT NULL);");
+
+    // Character notes table //
+    await db.execute(
+        "CREATE TABLE $COMBAT_EVENTS_TABLE (" +
+            "$BASE_MODEL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "$BASE_MODEL_CREATION_DATE INTEGER NOT NULL," +
+            "$COMBAT_EVENT_NAME TEXT NOT NULL," +
+            "$COMBAT_EVENT_CHARACTERS TEXT NOT NULL," +
+            "$COMBAT_EVENT_CURRENT_HPS TEXT NOT NULL," +
+            "$COMBAT_EVENT_INITIATIVES_ROLLED TEXT NOT NULL," +
+            "$COMBAT_EVENT_IS_ROUND_OVER TEXT NOT NULL," +
+            "$COMBAT_EVENT_CURRENT_ROUND INTEGER NOT NULL);");
   }
 
   static const String _DB_PATH = "db.dungeonsdragonsdb";
