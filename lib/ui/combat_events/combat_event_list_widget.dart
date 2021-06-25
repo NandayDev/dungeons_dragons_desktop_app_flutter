@@ -27,7 +27,14 @@ class CombatEventListWidget extends ConsumerWidget {
             // Shows the list, if loaded //
                 : Container(
                 alignment: Alignment.center,
-                child: DataTable(
+                padding: EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    TextButton(onPressed: (){}, child: Row(children: [
+                      Icon(Icons.add),
+                      Text("Add a new combat event")
+                    ],)),
+                  DataTable(
                   columns: [
                     DataColumn(label: Text("Date")),
                     DataColumn(label: Text("Battle name")),
@@ -38,6 +45,8 @@ class CombatEventListWidget extends ConsumerWidget {
                   rows: _getTableRows(state.combatEvents, context)
                       .toList(),
                   showCheckboxColumn: false,
+                )
+                  ],
                 )
             )
         )

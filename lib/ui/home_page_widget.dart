@@ -13,13 +13,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   MainMenuItem? _currentItem;
+  late AppBar appBar;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
             title: Text(
-              "Dungeons and Dragons Helper",
+              _currentItem == null ?
+              "Dungeons and Dragons Helper" :
+              _currentItem!.getReadableName(),
             )),
         drawer: Drawer(
           // Add a ListView to the drawer. This ensures the user can scroll
