@@ -1,6 +1,8 @@
+import 'package:dungeonsanddragons_helper/models/character.dart';
 import 'package:dungeonsanddragons_helper/models/combat_event.dart';
 import 'package:dungeonsanddragons_helper/services/character_repository.dart';
 import 'package:dungeonsanddragons_helper/services/database.dart';
+import 'package:dungeonsanddragons_helper/services/dependency_injector.dart';
 import 'package:dungeonsanddragons_helper/ui/combat_events/combat_event_list_element_viewmodel.dart';
 import 'package:dungeonsanddragons_helper/utilities/database_utility.dart';
 import 'package:flutter/foundation.dart';
@@ -12,6 +14,10 @@ abstract class CombatEventsRepository {
   ///
   Future<List<CombatEventListElementViewModel>> getCombatEvents(int count, int skip);
 
+  ///
+  /// Returns a single combat event from the storage
+  ///
+  Future<CombatEvent?> getSingleCombatEvent(int id);
 }
 
 class CombatEventsRepositoryImpl extends CombatEventsRepository {
@@ -93,6 +99,59 @@ class CombatEventsRepositoryImpl extends CombatEventsRepository {
         CharacterRepositoryImpl.MOCK_PC_2: true
       },
       1);
+
+  @override
+  Future<CombatEvent?> getSingleCombatEvent(int id) async {
+
+    var database = await DungeonsDatabase.getDatabaseInstance();
+
+    var queryResult = await database.rawQuery(
+        "SELECT * FROM ${DungeonsDatabase.COMBAT_EVENTS_TABLE} WHERE ${DungeonsDatabase.BASE_MODEL_ID} = $id"
+    );
+
+    if (queryResult.length == 0) {
+      return null;
+    }
+
+    var row = queryResult[0];
+
+    // Initializes the maps of the combat event //
+    Map<Character,int> currentHps = {};
+    Map<Character,int> initiativesRolled = {};
+    Map<Character,bool> isRoundOver = {};
+
+    String charactersToLoadString = row[DungeonsDatabase.COMBAT_EVENT_CHARACTERS] as String;
+    var charactersToLoad = DatabaseUtility.transformIntoArrayOfInt(charactersToLoadString);
+    String currentHpsString = row[DungeonsDatabase.COMBAT_EVENT_CURRENT_HPS] as String;
+    var currentHpsList = DatabaseUtility.transformIntoArrayOfInt(currentHpsString);
+    String initiativesRolledString = row[DungeonsDatabase.COMBAT_EVENT_INITIATIVES_ROLLED] as String;
+    var initiativesRolledList = DatabaseUtility.transformIntoArrayOfInt(initiativesRolledString);
+    String isRoundOverString = row[DungeonsDatabase.COMBAT_EVENT_IS_ROUND_OVER] as String;
+    var isRoundOverList = DatabaseUtility.transformIntoArrayOfBool(isRoundOverString);
+
+    // Gets the characters from the characters repository //
+    List<Character> characters = [];
+    var characterRepository = DependencyInjector.getInstance().resolve<CharacterRepository>();
+    for(int i = 0; i < charactersToLoad.length; i++) {
+      int characterId = charactersToLoad[i];
+      var character = await characterRepository.getSingleCharacter(characterId);
+      characters.add(character!);
+      currentHps[character] = currentHpsList[i];
+      initiativesRolled[character] = initiativesRolledList[i];
+      isRoundOver[character] = isRoundOverList[i];
+    }
+
+    return CombatEvent.fromExisting(
+        id,
+        DungeonsDatabase.getUtcDateTimeFromMillisecondsSinceEpoch(row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int),
+        row[DungeonsDatabase.COMBAT_EVENT_NAME] as String,
+        characters,
+        currentHps,
+        initiativesRolled,
+        isRoundOver,
+        row[DungeonsDatabase.COMBAT_EVENT_CURRENT_ROUND] as int
+    );
+  }
 }
 
 extension CombatEventToMap on CombatEvent {

@@ -194,4 +194,39 @@ class NonPlayingCharacter extends Character {
       passiveWisdom,
       stealth,
       insight);
+
+  NonPlayingCharacter.fromExisting(
+      int id,
+      DateTime creationDate,
+      String name,
+      int strength,
+      int dexterity,
+      int constitution,
+      int intelligence,
+      int wisdom,
+      int charisma,
+      String primaryClass,
+      int level,
+      int initiativeBonus,
+      int armorClass,
+      int passiveWisdom,
+      int stealth,
+      int insight)
+      : super.fromExisting(
+      id,
+      creationDate,
+      name,
+      strength,
+      dexterity,
+      constitution,
+      intelligence,
+      wisdom,
+      charisma,
+      primaryClass,
+      level,
+      initiativeBonus,
+      armorClass,
+      passiveWisdom,
+      stealth,
+      insight);
 }

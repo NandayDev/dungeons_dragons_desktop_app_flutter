@@ -2,6 +2,7 @@ import 'package:dungeonsanddragons_helper/services/character_repository.dart';
 import 'package:dungeonsanddragons_helper/services/combat_events_repository.dart';
 import 'package:dungeonsanddragons_helper/ui/characters/player_characters_list_viewmodel.dart';
 import 'package:dungeonsanddragons_helper/ui/combat_events/combat_event_list_viewmodel.dart';
+import 'package:dungeonsanddragons_helper/ui/combat_events/details/combat_event_details_viewmodel.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 
 import 'character_notes_repository.dart';
@@ -25,6 +26,7 @@ class DependencyInjector {
     // View models //
     _injector.map<PlayerCharactersListViewModel>((i) => PlayerCharactersListViewModel(resolve()));
     _injector.map<CombatEventListViewModel>((i) => CombatEventListViewModel(resolve()));
+    _injector.map<CombatEventDetailsViewModel>((i) => CombatEventDetailsViewModel(resolve()));
   }
 
   ///

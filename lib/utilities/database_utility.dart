@@ -12,6 +12,10 @@ class DatabaseUtility {
         .toList();
   }
 
+  static List<bool> transformIntoArrayOfBool(String dbString) {
+    return transformIntoArrayOfInt(dbString).map((e) => e == 1).toList();
+  }
+
   static String transformIntoDatabaseString(List<int> listOfIntegers) {
     return listOfIntegers.join(_SEPARATOR);
   }

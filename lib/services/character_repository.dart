@@ -15,7 +15,7 @@ abstract class CharacterRepository {
   ///
   /// Returns a single player character, fetched by id
   ///
-  Future<PlayerCharacter?> getSinglePlayerCharacter(int characterId);
+  Future<Character?> getSingleCharacter(int characterId);
 
   ///
   /// Saves a new or existing player character to the storage
@@ -44,13 +44,13 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
     _cachedPlayerCharacters = [];
     queryResult.forEach((row) {
-      _cachedPlayerCharacters!.add(_convertFromRow(row));
+      _cachedPlayerCharacters!.add(_convertFromRow(row) as PlayerCharacter);
     });
     return _cachedPlayerCharacters!;
   }
 
   @override
-  Future<PlayerCharacter?> getSinglePlayerCharacter(int characterId) async {
+  Future<Character?> getSingleCharacter(int characterId) async {
     if (_cachedPlayerCharacters != null) {
       for (var playerChar in _cachedPlayerCharacters!) {
         if (playerChar.id == characterId) {
@@ -80,26 +80,55 @@ class CharacterRepositoryImpl implements CharacterRepository {
   ///
   /// Converts a row from the database (in the form of a map) into a PlayerCharacter
   ///
-  PlayerCharacter _convertFromRow(Map<String, Object?> row) {
-    return PlayerCharacter.fromExisting(
-        row[DungeonsDatabase.BASE_MODEL_ID] as int,
-        DungeonsDatabase.getUtcDateTimeFromMillisecondsSinceEpoch(
-            row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int),
-        row[DungeonsDatabase.CHARACTER_PLAYER_NAME] as String,
-        row[DungeonsDatabase.CHARACTER_NAME] as String,
-        row[DungeonsDatabase.CHARACTER_STRENGTH] as int,
-        row[DungeonsDatabase.CHARACTER_DEXTERITY] as int,
-        row[DungeonsDatabase.CHARACTER_CONSTITUTION] as int,
-        row[DungeonsDatabase.CHARACTER_INTELLIGENCE] as int,
-        row[DungeonsDatabase.CHARACTER_WISDOM] as int,
-        row[DungeonsDatabase.CHARACTER_CHARISMA] as int,
-        row[DungeonsDatabase.CHARACTER_PRIMARY_CLASS] as String,
-        row[DungeonsDatabase.CHARACTER_LEVEL] as int,
-        row[DungeonsDatabase.CHARACTER_INITIATIVE_BONUS] as int,
-        row[DungeonsDatabase.CHARACTER_ARMOR_CLASS] as int,
-        row[DungeonsDatabase.CHARACTER_PASSIVE_WISDOM] as int,
-        row[DungeonsDatabase.CHARACTER_STEALTH] as int,
-        row[DungeonsDatabase.CHARACTER_INSIGHT] as int);
+  Character _convertFromRow(Map<String, Object?> row) {
+    switch(row[DungeonsDatabase.CHARACTER_TYPE] as int) {
+
+      case DungeonsDatabase.CHARACTER_TYPE_PC:
+        return PlayerCharacter.fromExisting(
+            row[DungeonsDatabase.BASE_MODEL_ID] as int,
+            DungeonsDatabase.getUtcDateTimeFromMillisecondsSinceEpoch(
+                row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int),
+            row[DungeonsDatabase.CHARACTER_PLAYER_NAME] as String,
+            row[DungeonsDatabase.CHARACTER_NAME] as String,
+            row[DungeonsDatabase.CHARACTER_STRENGTH] as int,
+            row[DungeonsDatabase.CHARACTER_DEXTERITY] as int,
+            row[DungeonsDatabase.CHARACTER_CONSTITUTION] as int,
+            row[DungeonsDatabase.CHARACTER_INTELLIGENCE] as int,
+            row[DungeonsDatabase.CHARACTER_WISDOM] as int,
+            row[DungeonsDatabase.CHARACTER_CHARISMA] as int,
+            row[DungeonsDatabase.CHARACTER_PRIMARY_CLASS] as String,
+            row[DungeonsDatabase.CHARACTER_LEVEL] as int,
+            row[DungeonsDatabase.CHARACTER_INITIATIVE_BONUS] as int,
+            row[DungeonsDatabase.CHARACTER_ARMOR_CLASS] as int,
+            row[DungeonsDatabase.CHARACTER_PASSIVE_WISDOM] as int,
+            row[DungeonsDatabase.CHARACTER_STEALTH] as int,
+            row[DungeonsDatabase.CHARACTER_INSIGHT] as int);
+
+      case DungeonsDatabase.CHARACTER_TYPE_NPC:
+        return NonPlayingCharacter.fromExisting(
+            row[DungeonsDatabase.BASE_MODEL_ID] as int,
+            DungeonsDatabase.getUtcDateTimeFromMillisecondsSinceEpoch(
+                row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int),
+            row[DungeonsDatabase.CHARACTER_PLAYER_NAME] as String,
+            row[DungeonsDatabase.CHARACTER_STRENGTH] as int,
+            row[DungeonsDatabase.CHARACTER_DEXTERITY] as int,
+            row[DungeonsDatabase.CHARACTER_CONSTITUTION] as int,
+            row[DungeonsDatabase.CHARACTER_INTELLIGENCE] as int,
+            row[DungeonsDatabase.CHARACTER_WISDOM] as int,
+            row[DungeonsDatabase.CHARACTER_CHARISMA] as int,
+            row[DungeonsDatabase.CHARACTER_PRIMARY_CLASS] as String,
+            row[DungeonsDatabase.CHARACTER_LEVEL] as int,
+            row[DungeonsDatabase.CHARACTER_INITIATIVE_BONUS] as int,
+            row[DungeonsDatabase.CHARACTER_ARMOR_CLASS] as int,
+            row[DungeonsDatabase.CHARACTER_PASSIVE_WISDOM] as int,
+            row[DungeonsDatabase.CHARACTER_STEALTH] as int,
+            row[DungeonsDatabase.CHARACTER_INSIGHT] as int);
+
+      case DungeonsDatabase.CHARACTER_TYPE_MONSTER:
+      default:
+        // TODO
+        throw Error();
+    }
   }
 
   static PlayerCharacter MOCK_PC_1 = PlayerCharacter.fromExisting(1, DateTime.now().toUtc(),
