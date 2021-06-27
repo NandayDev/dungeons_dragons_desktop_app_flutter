@@ -1,9 +1,10 @@
 import 'package:dungeonsanddragons_helper/models/character.dart';
 import 'package:dungeonsanddragons_helper/models/combat_event.dart';
-import 'package:dungeonsanddragons_helper/services/character_repository.dart';
+import 'package:dungeonsanddragons_helper/services/repositories/character_repository.dart';
 import 'package:dungeonsanddragons_helper/services/database.dart';
 import 'package:dungeonsanddragons_helper/services/dependency_injector.dart';
 import 'package:dungeonsanddragons_helper/ui/combat_events/combat_event_list_element_viewmodel.dart';
+import 'package:dungeonsanddragons_helper/ui/combat_events/details/combat_event_details_list_element_viewmodel.dart';
 import 'package:dungeonsanddragons_helper/utilities/database_utility.dart';
 import 'package:flutter/foundation.dart';
 
@@ -17,7 +18,7 @@ abstract class CombatEventsRepository {
   ///
   /// Returns a single combat event from the storage
   ///
-  Future<CombatEvent?> getSingleCombatEvent(int id);
+  Future<List<CombatEventDetailsListElementViewModel>?> getSingleCombatEventDetails(int id);
 }
 
 class CombatEventsRepositoryImpl extends CombatEventsRepository {
@@ -101,7 +102,7 @@ class CombatEventsRepositoryImpl extends CombatEventsRepository {
       1);
 
   @override
-  Future<CombatEvent?> getSingleCombatEvent(int id) async {
+  Future<List<CombatEventDetailsListElementViewModel>?> getSingleCombatEventDetails(int id) async {
 
     var database = await DungeonsDatabase.getDatabaseInstance();
 
@@ -115,11 +116,6 @@ class CombatEventsRepositoryImpl extends CombatEventsRepository {
 
     var row = queryResult[0];
 
-    // Initializes the maps of the combat event //
-    Map<Character,int> currentHps = {};
-    Map<Character,int> initiativesRolled = {};
-    Map<Character,bool> isRoundOver = {};
-
     String charactersToLoadString = row[DungeonsDatabase.COMBAT_EVENT_CHARACTERS] as String;
     var charactersToLoad = DatabaseUtility.transformIntoArrayOfInt(charactersToLoadString);
     String currentHpsString = row[DungeonsDatabase.COMBAT_EVENT_CURRENT_HPS] as String;
@@ -130,27 +126,22 @@ class CombatEventsRepositoryImpl extends CombatEventsRepository {
     var isRoundOverList = DatabaseUtility.transformIntoArrayOfBool(isRoundOverString);
 
     // Gets the characters from the characters repository //
-    List<Character> characters = [];
+    List<CombatEventDetailsListElementViewModel> viewModels = [];
     var characterRepository = DependencyInjector.getInstance().resolve<CharacterRepository>();
     for(int i = 0; i < charactersToLoad.length; i++) {
       int characterId = charactersToLoad[i];
       var character = await characterRepository.getSingleCharacter(characterId);
-      characters.add(character!);
-      currentHps[character] = currentHpsList[i];
-      initiativesRolled[character] = initiativesRolledList[i];
-      isRoundOver[character] = isRoundOverList[i];
+      viewModels.add(
+          CombatEventDetailsListElementViewModel(
+            character!.name,
+            initiativesRolledList[i],
+            currentHpsList[i],
+            isRoundOverList[i]
+        )
+      );
     }
 
-    return CombatEvent.fromExisting(
-        id,
-        DungeonsDatabase.getUtcDateTimeFromMillisecondsSinceEpoch(row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int),
-        row[DungeonsDatabase.COMBAT_EVENT_NAME] as String,
-        characters,
-        currentHps,
-        initiativesRolled,
-        isRoundOver,
-        row[DungeonsDatabase.COMBAT_EVENT_CURRENT_ROUND] as int
-    );
+    return viewModels;
   }
 }
 
@@ -160,10 +151,10 @@ extension CombatEventToMap on CombatEvent {
   /// Useful for database operations
   ///
   Map<String, dynamic> _toMap() {
-    var charactersString = DatabaseUtility.transformIntoDatabaseString(characters.map((e) => e.id).toList());
-    var currentHpsString = DatabaseUtility.transformIntoDatabaseString(currentHps.values.toList());
-    var initiativesRolledString = DatabaseUtility.transformIntoDatabaseString(initiativesRolled.values.toList());
-    var isRoundOverString = DatabaseUtility.transformIntoDatabaseString(isRoundOver.values.map((e) => e ? 1 : 0).toList());
+    var charactersString = DatabaseUtility.transformIntegersIntoDatabaseString(characters.map((e) => e.id).toList());
+    var currentHpsString = DatabaseUtility.transformIntegersIntoDatabaseString(currentHps.values.toList());
+    var initiativesRolledString = DatabaseUtility.transformIntegersIntoDatabaseString(initiativesRolled.values.toList());
+    var isRoundOverString = DatabaseUtility.transformIntegersIntoDatabaseString(isRoundOver.values.map((e) => e ? 1 : 0).toList());
     return {
       DungeonsDatabase.BASE_MODEL_ID: id,
       DungeonsDatabase.BASE_MODEL_CREATION_DATE: DungeonsDatabase

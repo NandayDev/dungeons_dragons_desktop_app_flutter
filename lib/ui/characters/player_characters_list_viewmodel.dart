@@ -1,5 +1,5 @@
 import 'package:dungeonsanddragons_helper/models/character.dart';
-import 'package:dungeonsanddragons_helper/services/character_repository.dart';
+import 'package:dungeonsanddragons_helper/services/repositories/character_repository.dart';
 import 'package:dungeonsanddragons_helper/services/dependency_injector.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

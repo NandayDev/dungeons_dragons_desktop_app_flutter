@@ -16,7 +16,11 @@ class DatabaseUtility {
     return transformIntoArrayOfInt(dbString).map((e) => e == 1).toList();
   }
 
-  static String transformIntoDatabaseString(List<int> listOfIntegers) {
+  static String transformIntegersIntoDatabaseString(List<int> listOfIntegers) {
     return listOfIntegers.join(_SEPARATOR);
+  }
+
+  static String transformBooleansIntoDatabaseString(List<bool> listOfBooleans) {
+    return listOfBooleans.map((e) => e ? 1 : 0).join(_SEPARATOR);
   }
 }

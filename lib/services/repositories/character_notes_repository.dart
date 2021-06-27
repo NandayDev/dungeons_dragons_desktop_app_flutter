@@ -2,7 +2,7 @@ import 'package:dungeonsanddragons_helper/models/character.dart';
 import 'package:dungeonsanddragons_helper/models/character_note.dart';
 import 'package:dungeonsanddragons_helper/utilities/enum_utility.dart';
 
-import 'database.dart';
+import '../database.dart';
 
 ///
 /// Repository for the character notes

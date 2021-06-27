@@ -1,6 +1,6 @@
-import 'package:dungeonsanddragons_helper/models/combat_event.dart';
-import 'package:dungeonsanddragons_helper/services/combat_events_repository.dart';
 import 'package:dungeonsanddragons_helper/services/dependency_injector.dart';
+import 'package:dungeonsanddragons_helper/services/repositories/combat_events_repository.dart';
+import 'package:dungeonsanddragons_helper/ui/combat_events/details/combat_event_details_list_element_viewmodel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CombatEventDetailsViewModel extends StateNotifier<CombatEventDetailsState>  {
@@ -11,29 +11,34 @@ class CombatEventDetailsViewModel extends StateNotifier<CombatEventDetailsState>
 
   CombatEventsRepository _repository;
 
+  ///
+  /// Loads the combat event from the repository
+  ///
   Future loadCombatEvent(int combatEventId) async {
-    var combatEvent = await _repository.getSingleCombatEvent(combatEventId);
-    if (combatEvent == null) {
+    var combatEvents = await _repository.getSingleCombatEventDetails(combatEventId);
+    if (combatEvents == null) {
       return;
     }
-
-    // TODO
+    // Notifies the change of state //
+    state = CombatEventDetailsState.loaded(combatEvents);
   }
+
+
 }
 
 class CombatEventDetailsState {
 
   CombatEventDetailsState.toBeLoaded() {
     this.isEventToBeLoadedYet = true;
-    this.combatEvent = null;
+    this.combatEvents = [];
   }
 
-  CombatEventDetailsState.loaded(CombatEvent combatEvent) {
+  CombatEventDetailsState.loaded(List<CombatEventDetailsListElementViewModel> combatEvents) {
     this.isEventToBeLoadedYet = false;
-    this.combatEvent = combatEvent;
+    this.combatEvents = combatEvents;
   }
 
   late bool isEventToBeLoadedYet;
 
-  late CombatEvent? combatEvent;
+  late List<CombatEventDetailsListElementViewModel> combatEvents;
 }

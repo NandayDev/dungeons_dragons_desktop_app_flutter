@@ -1,4 +1,4 @@
-import 'package:dungeonsanddragons_helper/services/combat_events_repository.dart';
+import 'package:dungeonsanddragons_helper/services/repositories/combat_events_repository.dart';
 import 'package:dungeonsanddragons_helper/services/dependency_injector.dart';
 import 'package:dungeonsanddragons_helper/ui/combat_events/combat_event_list_element_viewmodel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

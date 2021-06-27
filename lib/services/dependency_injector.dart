@@ -1,11 +1,11 @@
-import 'package:dungeonsanddragons_helper/services/character_repository.dart';
-import 'package:dungeonsanddragons_helper/services/combat_events_repository.dart';
+import 'package:dungeonsanddragons_helper/services/repositories/character_repository.dart';
+import 'package:dungeonsanddragons_helper/services/repositories/combat_events_repository.dart';
 import 'package:dungeonsanddragons_helper/ui/characters/player_characters_list_viewmodel.dart';
 import 'package:dungeonsanddragons_helper/ui/combat_events/combat_event_list_viewmodel.dart';
 import 'package:dungeonsanddragons_helper/ui/combat_events/details/combat_event_details_viewmodel.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 
-import 'character_notes_repository.dart';
+import 'repositories/character_notes_repository.dart';
 
 ///
 /// Simple implementation of a dependency injector

@@ -3,17 +3,19 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test("Test database utility's int array conversion", () {
-    List<int> arr = [];
 
-    String str = DatabaseUtility.transformIntoDatabaseString(arr);
+    // First ints //
+
+    List<int> arr = [];
+    String str = DatabaseUtility.transformIntegersIntoDatabaseString(arr);
     expect(str, "");
 
     arr.add(12);
-    str = DatabaseUtility.transformIntoDatabaseString(arr);
+    str = DatabaseUtility.transformIntegersIntoDatabaseString(arr);
     expect(str, "12");
 
     arr.add(1245);
-    str = DatabaseUtility.transformIntoDatabaseString(arr);
+    str = DatabaseUtility.transformIntegersIntoDatabaseString(arr);
     expect(str, "12,1245");
 
     str = "16,235,35";
@@ -32,5 +34,34 @@ void main() {
     arr = DatabaseUtility.transformIntoArrayOfInt(str);
     expect(arr.length, 0);
 
+    // Now booleans //
+
+    List<bool> boolArr = [];
+    str = DatabaseUtility.transformBooleansIntoDatabaseString(boolArr);
+    expect(str, "");
+
+    boolArr.add(true);
+    str = DatabaseUtility.transformBooleansIntoDatabaseString(boolArr);
+    expect(str, "1");
+
+    boolArr.add(false);
+    str = DatabaseUtility.transformBooleansIntoDatabaseString(boolArr);
+    expect(str, "1,0");
+
+    str = "0,0,1";
+    boolArr = DatabaseUtility.transformIntoArrayOfBool(str);
+    expect(boolArr.length, 3);
+    expect(boolArr[0], false);
+    expect(boolArr[1], false);
+    expect(boolArr[2], true);
+
+    str = "0";
+    boolArr = DatabaseUtility.transformIntoArrayOfBool(str);
+    expect(boolArr.length, 1);
+    expect(boolArr[0], false);
+
+    str = "";
+    boolArr = DatabaseUtility.transformIntoArrayOfBool(str);
+    expect(boolArr.length, 0);
   });
 }
