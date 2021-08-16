@@ -1,5 +1,6 @@
 import 'package:dungeonsanddragons_helper/models/character.dart';
 import 'package:dungeonsanddragons_helper/services/database.dart';
+import 'package:dungeonsanddragons_helper/utilities/database_utility.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -86,7 +87,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
       case DungeonsDatabase.CHARACTER_TYPE_PC:
         return PlayerCharacter.fromExisting(
             row[DungeonsDatabase.BASE_MODEL_ID] as int,
-            DungeonsDatabase.getUtcDateTimeFromMillisecondsSinceEpoch(
+            DatabaseUtility.getUtcDateTimeFromMillisecondsSinceEpoch(
                 row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int),
             row[DungeonsDatabase.CHARACTER_PLAYER_NAME] as String,
             row[DungeonsDatabase.CHARACTER_NAME] as String,
@@ -107,7 +108,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
       case DungeonsDatabase.CHARACTER_TYPE_NPC:
         return NonPlayingCharacter.fromExisting(
             row[DungeonsDatabase.BASE_MODEL_ID] as int,
-            DungeonsDatabase.getUtcDateTimeFromMillisecondsSinceEpoch(
+            DatabaseUtility.getUtcDateTimeFromMillisecondsSinceEpoch(
                 row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int),
             row[DungeonsDatabase.CHARACTER_PLAYER_NAME] as String,
             row[DungeonsDatabase.CHARACTER_STRENGTH] as int,
@@ -148,7 +149,7 @@ extension CharacterToMap on Character {
     return {
       DungeonsDatabase.BASE_MODEL_ID: id,
       DungeonsDatabase.BASE_MODEL_CREATION_DATE:
-          DungeonsDatabase.getMillisecondsSinceEpochFromDateTime(creationDate),
+          DatabaseUtility.getMillisecondsSinceEpochFromDateTime(creationDate),
       DungeonsDatabase.CHARACTER_NAME: name,
       DungeonsDatabase.CHARACTER_STRENGTH: strength,
       DungeonsDatabase.CHARACTER_DEXTERITY: dexterity,

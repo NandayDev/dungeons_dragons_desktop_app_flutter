@@ -1,5 +1,6 @@
 import 'package:dungeonsanddragons_helper/models/character.dart';
 import 'package:dungeonsanddragons_helper/models/character_note.dart';
+import 'package:dungeonsanddragons_helper/utilities/database_utility.dart';
 import 'package:dungeonsanddragons_helper/utilities/enum_utility.dart';
 
 import '../database.dart';
@@ -24,7 +25,7 @@ class CharacterNotesRepositoryImpl implements CharacterNotesRepository {
         "SELECT * FROM ${DungeonsDatabase.CHARACTER_NOTES_TABLE} WHERE ${DungeonsDatabase.CHARACTER_NOTES_CHARACTER_ID} = ${character.id}");
     List<CharacterNote> notes = [];
     queryResult.forEach((row) {
-      DateTime creationDate = DungeonsDatabase.getUtcDateTimeFromMillisecondsSinceEpoch(row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int);
+      DateTime creationDate = DatabaseUtility.getUtcDateTimeFromMillisecondsSinceEpoch(row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int);
       NotePriority notePriority = EnumUtility.parseFromInt(
           NotePriority.values,
           row[DungeonsDatabase.CHARACTER_NOTES_PRIORITY] as int)!;

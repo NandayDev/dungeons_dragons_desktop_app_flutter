@@ -1,8 +1,10 @@
 import 'package:dungeonsanddragons_helper/services/repositories/character_repository.dart';
 import 'package:dungeonsanddragons_helper/services/repositories/combat_events_repository.dart';
+import 'package:dungeonsanddragons_helper/services/repositories/wiki_repository.dart';
 import 'package:dungeonsanddragons_helper/ui/characters/player_characters_list_viewmodel.dart';
 import 'package:dungeonsanddragons_helper/ui/combat_events/combat_event_list_viewmodel.dart';
 import 'package:dungeonsanddragons_helper/ui/combat_events/details/combat_event_details_viewmodel.dart';
+import 'package:dungeonsanddragons_helper/ui/wiki/wiki_widget_viewmodel.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 
 import 'repositories/character_notes_repository.dart';
@@ -22,11 +24,13 @@ class DependencyInjector {
     _injector.map<CharacterRepository>((i) => CharacterRepositoryImpl(), isSingleton: true);
     _injector.map<CharacterNotesRepository>((i) => CharacterNotesRepositoryImpl(), isSingleton: true);
     _injector.map<CombatEventsRepository>((i) => CombatEventsRepositoryImpl(), isSingleton: true);
+    _injector.map<WikiRepository>((i) => WikiRepositoryImpl(), isSingleton: true);
 
     // View models //
     _injector.map<PlayerCharactersListViewModel>((i) => PlayerCharactersListViewModel(resolve()));
     _injector.map<CombatEventListViewModel>((i) => CombatEventListViewModel(resolve()));
     _injector.map<CombatEventDetailsViewModel>((i) => CombatEventDetailsViewModel(resolve()));
+    _injector.map<WikiWidgetViewModel>((i) => WikiWidgetViewModel(resolve()));
   }
 
   ///

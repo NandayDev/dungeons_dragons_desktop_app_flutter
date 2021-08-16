@@ -1,8 +1,7 @@
-import 'package:dungeonsanddragons_helper/models/character.dart';
 import 'package:dungeonsanddragons_helper/models/combat_event.dart';
-import 'package:dungeonsanddragons_helper/services/repositories/character_repository.dart';
 import 'package:dungeonsanddragons_helper/services/database.dart';
 import 'package:dungeonsanddragons_helper/services/dependency_injector.dart';
+import 'package:dungeonsanddragons_helper/services/repositories/character_repository.dart';
 import 'package:dungeonsanddragons_helper/ui/combat_events/combat_event_list_element_viewmodel.dart';
 import 'package:dungeonsanddragons_helper/ui/combat_events/details/combat_event_details_list_element_viewmodel.dart';
 import 'package:dungeonsanddragons_helper/utilities/database_utility.dart';
@@ -62,7 +61,7 @@ class CombatEventsRepositoryImpl extends CombatEventsRepository {
     return CombatEventListElementViewModel(
         row[DungeonsDatabase.BASE_MODEL_ID] as int,
         row[DungeonsDatabase.COMBAT_EVENT_NAME] as String,
-        DungeonsDatabase.getUtcDateTimeFromMillisecondsSinceEpoch(
+        DatabaseUtility.getUtcDateTimeFromMillisecondsSinceEpoch(
             row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int),
         characterIds.length,
         row[DungeonsDatabase.COMBAT_EVENT_CURRENT_ROUND] as int);
@@ -157,7 +156,7 @@ extension CombatEventToMap on CombatEvent {
     var isRoundOverString = DatabaseUtility.transformIntegersIntoDatabaseString(isRoundOver.values.map((e) => e ? 1 : 0).toList());
     return {
       DungeonsDatabase.BASE_MODEL_ID: id,
-      DungeonsDatabase.BASE_MODEL_CREATION_DATE: DungeonsDatabase
+      DungeonsDatabase.BASE_MODEL_CREATION_DATE: DatabaseUtility
           .getMillisecondsSinceEpochFromDateTime(creationDate),
       DungeonsDatabase.COMBAT_EVENT_NAME: name,
       DungeonsDatabase.COMBAT_EVENT_CHARACTERS: charactersString,

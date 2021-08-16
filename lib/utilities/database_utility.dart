@@ -23,4 +23,22 @@ class DatabaseUtility {
   static String transformBooleansIntoDatabaseString(List<bool> listOfBooleans) {
     return listOfBooleans.map((e) => e ? 1 : 0).join(_SEPARATOR);
   }
+
+
+  ///
+  /// Returns a DateTime object from milliseconds since epoch
+  ///
+  static DateTime getUtcDateTimeFromMillisecondsSinceEpoch(int millisecondsSinceEpoch) {
+    return DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch, isUtc: true);
+  }
+
+  ///
+  /// Returns the number of milliseconds since epoch from a DateTime object
+  ///
+  static int getMillisecondsSinceEpochFromDateTime(DateTime dateTime) {
+    if (!dateTime.isUtc) {
+      dateTime = dateTime.toUtc();
+    }
+    return dateTime.millisecondsSinceEpoch;
+  }
 }
