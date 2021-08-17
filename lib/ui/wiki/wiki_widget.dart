@@ -1,3 +1,4 @@
+import 'package:dungeonsanddragons_helper/ui/wiki/wiki_document_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,5 +28,21 @@ class WikiWidget extends ConsumerWidget {
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(10.0),
                     child: Column())));
+  }
+}
+
+class WikiList extends StatefulWidget {
+  const WikiList(this.documents) : super();
+
+  final List<WikiDocumentViewModel> documents;
+
+  @override
+  _WikiListState createState() => _WikiListState();
+}
+
+class _WikiListState extends State<WikiList> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
