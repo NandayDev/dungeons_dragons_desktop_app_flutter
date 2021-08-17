@@ -2,7 +2,8 @@ enum MainMenuItem {
   PLAYERS,
   NPC,
   MONSTERS,
-  COMBAT
+  COMBAT,
+  WIKI
 }
 
 extension MainMenuItemExtensions on MainMenuItem {
@@ -16,6 +17,8 @@ extension MainMenuItemExtensions on MainMenuItem {
         return "Monsters";
       case MainMenuItem.COMBAT:
         return "Combat";
+      case MainMenuItem.WIKI:
+        return "Wiki";
     }
   }
 }

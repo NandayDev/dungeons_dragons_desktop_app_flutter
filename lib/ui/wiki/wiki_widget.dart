@@ -1,6 +1,5 @@
 import 'package:dungeonsanddragons_helper/ui/wiki/wiki_document_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'wiki_widget_viewmodel.dart';
@@ -27,7 +26,11 @@ class WikiWidget extends ConsumerWidget {
                 : Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(10.0),
-                    child: Column())));
+                    child: Row(
+                      children: [
+                        WikiList(state.documents)
+                      ],
+                    ))));
   }
 }
 
@@ -41,8 +44,36 @@ class WikiList extends StatefulWidget {
 }
 
 class _WikiListState extends State<WikiList> {
+  final List<int> colorCodes = [600, 500, 100];
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return createWikiList(widget.documents);
+  }
+
+  Widget createWikiList(List<WikiDocumentViewModel> documents) {
+    return Container(
+        child: ListView.builder(
+            padding: EdgeInsets.only(left: 5.0, top: 8.0, bottom: 8.0),
+            itemCount: documents.length,
+            itemBuilder: (BuildContext context, int index) {
+              WikiDocumentViewModel currentDocument = documents[index];
+
+              return Column(children: [
+                Container(
+                  height: 50,
+                  color: Colors.amber[colorCodes[index]],
+                  child: Row(
+                    children: [
+                      IconButton(onPressed: () {}, icon: Icon(Icons.add)),
+                      Text(currentDocument.title)
+                    ],
+                  ),
+                ),
+                currentDocument.childrenDocuments.length == 0
+                    ? Container()
+                    : createWikiList(currentDocument.childrenDocuments)
+              ]);
+            }));
   }
 }

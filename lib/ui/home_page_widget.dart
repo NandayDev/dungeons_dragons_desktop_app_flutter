@@ -1,6 +1,7 @@
 import 'package:dungeonsanddragons_helper/enums/main_menu_item.dart';
 import 'package:dungeonsanddragons_helper/ui/characters/player_characters_list_widget.dart';
 import 'package:dungeonsanddragons_helper/ui/combat_events/combat_event_list_widget.dart';
+import 'package:dungeonsanddragons_helper/ui/wiki/wiki_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -56,6 +57,15 @@ class _HomePageState extends State<HomePage> {
                   });
                 },
               ),
+              ListTile(
+                title: Text("Wiki"),
+                onTap: () {
+                  Navigator.pop(context);
+                  setState(() {
+                    _currentItem = MainMenuItem.WIKI;
+                  });
+                },
+              ),
 
             ],
           ),
@@ -84,6 +94,9 @@ class _HomePageState extends State<HomePage> {
         return Center(child: Text("Welcome!"),);
 
 
+      case MainMenuItem.WIKI:
+        return WikiWidget();
+        break;
     }
   }
 
