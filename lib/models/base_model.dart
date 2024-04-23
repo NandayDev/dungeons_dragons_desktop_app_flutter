@@ -17,5 +17,4 @@ abstract class BaseModel {
 
   /// Date in which this entry was created
   late DateTime creationDate;
-
 }

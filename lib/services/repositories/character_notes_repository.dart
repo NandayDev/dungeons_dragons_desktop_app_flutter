@@ -3,40 +3,30 @@ import 'package:dungeonsanddragons_helper/models/character_note.dart';
 import 'package:dungeonsanddragons_helper/utilities/database_utility.dart';
 import 'package:dungeonsanddragons_helper/utilities/enum_utility.dart';
 
-import '../database.dart';
+import '../../enums/note_priority.dart';
+import '../local_storage.dart';
 
 ///
 /// Repository for the character notes
 ///
 abstract class CharacterNotesRepository {
-
   ///
   /// Returns a list of all character notes for given character
   ///
-  Future<List<CharacterNote>> getAllCharacterNotes(Character character);
+  List<CharacterNote> getAllCharacterNotes(Character character);
 }
 
 class CharacterNotesRepositoryImpl implements CharacterNotesRepository {
+  CharacterNotesRepositoryImpl(this._localStorage);
+
+  final LocalStorage _localStorage;
 
   @override
-  Future<List<CharacterNote>> getAllCharacterNotes(Character character) async {
-    var database = await DungeonsDatabase.getDatabaseInstance();
-    var queryResult = await database.rawQuery(
-        "SELECT * FROM ${DungeonsDatabase.CHARACTER_NOTES_TABLE} WHERE ${DungeonsDatabase.CHARACTER_NOTES_CHARACTER_ID} = ${character.id}");
-    List<CharacterNote> notes = [];
-    queryResult.forEach((row) {
-      DateTime creationDate = DatabaseUtility.getUtcDateTimeFromMillisecondsSinceEpoch(row[DungeonsDatabase.BASE_MODEL_CREATION_DATE] as int);
-      NotePriority notePriority = EnumUtility.parseFromInt(
-          NotePriority.values,
-          row[DungeonsDatabase.CHARACTER_NOTES_PRIORITY] as int)!;
-      notes.add(CharacterNote.fromExisting(
-          row[DungeonsDatabase.BASE_MODEL_ID] as int,
-          creationDate,
-          character.id,
-          row[DungeonsDatabase.CHARACTER_NOTES_CONTENT] as String,
-          notePriority));
-    });
-    return notes;
+  List<CharacterNote> getAllCharacterNotes(Character character) {
+    return _localStorage.getCharacterNotes(character).map((charNote) {
+      DateTime creationDate = DatabaseUtility.getUtcDateTimeFromMillisecondsSinceEpoch(charNote.creationDate);
+      NotePriority notePriority = EnumUtility.parseFromInt(NotePriority.values, charNote.priority)!;
+      return CharacterNote.fromExisting(charNote.id, creationDate, character.id, charNote.content, notePriority);
+    }).toList();
   }
-
 }

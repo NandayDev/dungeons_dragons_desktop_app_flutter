@@ -1,6 +1,6 @@
 import 'package:dungeonsanddragons_helper/models/combat_event.dart';
-import 'package:dungeonsanddragons_helper/services/database.dart';
 import 'package:dungeonsanddragons_helper/services/dependency_injector.dart';
+import 'package:dungeonsanddragons_helper/services/local_storage.dart';
 import 'package:dungeonsanddragons_helper/services/repositories/character_repository.dart';
 import 'package:dungeonsanddragons_helper/ui/combat_events/combat_event_list_element_viewmodel.dart';
 import 'package:dungeonsanddragons_helper/ui/combat_events/details/combat_event_details_list_element_viewmodel.dart';
@@ -21,11 +21,12 @@ abstract class CombatEventsRepository {
 }
 
 class CombatEventsRepositoryImpl extends CombatEventsRepository {
+  CombatEventsRepositoryImpl(this._localStorage);
+
+  final LocalStorage _localStorage;
 
   @override
   Future<List<CombatEventListElementViewModel>> getCombatEvents(int count, int skip) async {
-
-    var database = await DungeonsDatabase.getDatabaseInstance();
 
     var queryResult = await database.rawQuery(
       "SELECT * FROM ${DungeonsDatabase.COMBAT_EVENTS_TABLE} " +

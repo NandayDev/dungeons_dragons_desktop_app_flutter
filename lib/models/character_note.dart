@@ -1,3 +1,4 @@
+import '../enums/note_priority.dart';
 import 'base_model.dart';
 
 class CharacterNote extends BaseModel {
@@ -16,10 +17,4 @@ class CharacterNote extends BaseModel {
 
   /// Which priority this note has
   NotePriority notePriority;
-}
-
-enum NotePriority {
-  LOW,
-  DEFAULT,
-  HIGH
 }
